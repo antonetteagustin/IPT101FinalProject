@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Movie Mood Matcher</title>
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+</head>
+
+<body>
+  <!-- Main container -->
+  <div class="container">
+
+    <!-- Header or it acts as the navigation -->
+    <div id="header">
+      <h1>MOODVIE MATCHER</h1>
+      <button onclick="showAlert()">?</button>
+    </div>
+
+    <div class="centerContainer">
+      <!-- Area for choosing the mood -->
+      <h2>  What's your mood?</h2>
+      <div id="moodButtons">
+        <button class="moodBtn" data-mood="happy">Happy</button>
+        <button class="moodBtn" data-mood="sad">Sad</button>
+        <button class="moodBtn" data-mood="scared">Scared</button>
+        <button class="moodBtn" data-mood="adventurous">Adventurous</button>
+        <button class="moodBtn" data-mood="romantic">Romantic</button>
+        <button class="moodBtn" data-mood="fighting">Fighting</button>
+      </div>
+
+      <!-- Area for different buttons -->
+      <div class="buttonGroup">
+        <button id="getMovieBtn">Get Movie</button>
+        <button id="shuffleBtn">Shuffle</button>
+        <button id="clearSearchBtn">Clear Search</button>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <h2 id="movieSuggestion">Movie Suggestion</h2>
+
+    <!-- Where the movie result will appear and some information -->
+    <div id="movieResult">
+      <img id="moviePoster" src="" alt="Movie Poster">
+      <h3 id="movieTitle"></h3>
+      <p class="rating">⭐ <span id="movieRating"></span>/10</p>
+      <p class="genre"><strong>Genre:</strong> <span id="movieGenre"></span></p>
+      <p class="date"><strong>Release Date:</strong> <span id="movieDate"></span></p>
+      <p id="movieDescription"></p>
+
+      <!-- Area for cast/main actors -->
+      <h4>Cast</h4>
+      <div id="actorBios"></div>
+      <button id="addWatchlistBtn">Add to Watchlist</button>
+    </div>
+
+    <!-- Area for the youtube trailer -->
+    <div id="trailerContainer">
+      <h4>Trailer</h4>
+      <iframe id="youtubeTrailer" width="100%" height="315" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Area for the watchlist -->
+    <div id="watchlist">
+      <h2>My Watchlist</h2>
+      <div id="watchlistItems"></div>
+      <div class="watchlistButtons">
+        <button id="clearWatchlistBtn">Clear Watchlist</button>
+      </div>
+    </div>
+  </div>
+
+<!-- JavaScript -->
+<script src="js.js"></script>
+
+</body>
+</html>
