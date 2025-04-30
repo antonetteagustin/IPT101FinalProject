@@ -6,6 +6,7 @@
 // - And a youtube trailer via Youtube API
 // - The user can also add to watchlist, and can delete it, or if there are multiple, just simply click 'Clear Watchlist'
 // - The user can als clear the results by 'Clear Search' button
+// - Additionally, the watchlist will be saved in local storage
 
 // When the user clicked the ? button, an alert will show up
 function showAlert() {
