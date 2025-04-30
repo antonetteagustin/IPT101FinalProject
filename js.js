@@ -7,7 +7,6 @@
 // - The user can also add to watchlist, and can delete it, or if there are multiple, just simply click 'Clear Watchlist'
 // - The user can als clear the results by 'Clear Search' button
 
-
 // When the user clicked the ? button, an alert will show up
 function showAlert() {
     alert("This is a Mood and Movie (Mood-vie) Matcher! Select a mood to get a movie suggestion.");
@@ -45,8 +44,9 @@ document.getElementById('shuffleBtn').addEventListener('click', () => getMovie(t
 document.getElementById('clearSearchBtn').addEventListener('click', clearSearch); // When the 'clearSearchBtn' is clicked, the 'clearSearch' function will be called
 document.getElementById('addWatchlistBtn').addEventListener('click', addToWatchlist); // When the 'clearWatchlistBtn' is clicked, the 'addToWatchlist' function will be called
 document.getElementById('clearWatchlistBtn').addEventListener('click', () => {
-document.getElementById('watchlistItems').innerHTML = '';
-}); // When the 'clearWatchlistBtn' is clicked the contents will be cleared in the 'watchlistItems
+localStorage.removeItem('watchlist'); // clear from local storage
+renderWatchlist(); // refresh the view
+}); // When the 'clearWatchlistBtn' is clicked the contents will be cleared in the 'watchlistItems'
 
 // Fetches movie based on mood or in random
 async function getMovie(forceRandom) {
@@ -146,22 +146,53 @@ document.getElementById('trailerContainer').classList.remove('show');
 // Function for the Watchlist
 function addToWatchlist() {
 if (!currentMovie) return alert('No movie to add!');
-const watchlistItems = document.getElementById('watchlistItems');
-const itemDiv = document.createElement('div');
-itemDiv.classList.add('watchlist-item');
 
-// Full movie details in the watchlist
-const posterUrl = currentMovie.poster_path ? `https://image.tmdb.org/t/p/w500${currentMovie.poster_path}` : '';
-itemDiv.innerHTML = `
+let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
 
-    <img src="${posterUrl}" alt="${currentMovie.title}" width="50" height="75" style="object-fit: cover; border-radius: 8px; margin-right: 10px;">
-    <strong>${currentMovie.title}</strong><br>
-    <em>${currentMovie.overview.slice(0, 100)}...</em> 
-    <button class="delete-btn">Delete</button>
-`;
-
-watchlistItems.appendChild(itemDiv);
-
-// Delete button functionality
-itemDiv.querySelector('.delete-btn').addEventListener('click', () => itemDiv.remove());
+if (watchlist.some(item => item.id === currentMovie.id)) {
+    return alert("Movie already in watchlist.");
 }
+
+watchlist.push(currentMovie);
+localStorage.setItem('watchlist', JSON.stringify(watchlist));
+renderWatchlist();
+}
+
+// Render the watchlist from local storage
+function renderWatchlist() {
+const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+const watchlistItems = document.getElementById('watchlistItems');
+watchlistItems.innerHTML = '';
+
+watchlist.forEach(movie => {
+    const itemDiv = document.createElement('div');
+    itemDiv.classList.add('watchlist-item');
+
+    const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : '';
+    itemDiv.innerHTML = `
+        <img src="${posterUrl}" alt="${movie.title}" width="50" height="75" style="object-fit: cover; border-radius: 8px; margin-right: 10px;">
+        <strong>${movie.title}</strong><br>
+        <em>${movie.overview.slice(0, 100)}...</em> 
+        <button class="delete-btn">Delete</button>
+    `;
+
+    itemDiv.querySelector('.delete-btn').addEventListener('click', () => {
+        removeFromWatchlist(movie.id);
+    });
+
+    watchlistItems.appendChild(itemDiv);
+});
+}
+
+// Delete a movie from the watchlist
+function removeFromWatchlist(id) {
+let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+watchlist = watchlist.filter(movie => movie.id !== id);
+localStorage.setItem('watchlist', JSON.stringify(watchlist));
+renderWatchlist();
+}
+
+// Load watchlist on startup
+window.addEventListener('DOMContentLoaded', () => {
+renderWatchlist();
+});
